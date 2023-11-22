@@ -113,10 +113,19 @@ public class SecurityConfig {
         final List<String> allowedOrigins = new ArrayList<>();
         appUrlOrigin.ifPresent(allowedOrigins::add);
         final String allowedOriginsConfig = config.getConfig(ConfigParam.CORS_ALLOWED_ORIGINS);
-        allowedOrigins.addAll(Arrays.asList(allowedOriginsConfig.split(",")));
+        Arrays.stream(allowedOriginsConfig.split(",")).filter(s -> !s.isBlank()).forEach(allowedOrigins::add);
         if (!allowedOrigins.isEmpty()) {
             corsConfig.setAllowedOrigins(allowedOrigins);
             corsConfig.setAllowCredentials(true);
+        } else {
+            throw new RecordManagerException(String.format(
+                "The allowed origins are improperly configured as both"
+                    + " the '%s' and '%s' properties are empty. To permit requests from any origin,"
+                    + " configure it explicitly using '%s=*'.",
+                ConfigParam.APP_CONTEXT,
+                ConfigParam.CORS_ALLOWED_ORIGINS,
+                ConfigParam.CORS_ALLOWED_ORIGINS
+            ));
         }
     }
 
