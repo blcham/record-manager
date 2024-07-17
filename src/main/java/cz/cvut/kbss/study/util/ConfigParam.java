@@ -13,6 +13,8 @@ public enum ConfigParam {
 
     APP_CONTEXT("appContext"),
 
+    EXCEL_IMPORT_SERVICE_URL("excelImportServiceUrl"),
+    
     SMTP_HOST("smtp.host"),
     SMTP_PORT("smtp.port"),
     SMTP_USER("smtp.user"),
